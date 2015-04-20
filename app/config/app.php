@@ -127,6 +127,7 @@ return array(
         'Indatus\Dispatcher\ServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Dingo\Api\Provider\ApiServiceProvider',
+        'Barryvdh\DomPDF\ServiceProvider',
 
 	),
 

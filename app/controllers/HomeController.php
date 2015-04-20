@@ -419,11 +419,16 @@ class HomeController extends BaseController {
 
     public function issue_book() {
         $code=Input::get('code');
-        $book=Book::where('code',$code)->first();
+        $book=Book::where('id',$code)->first();
         if($book->issue == null) {
             $book->issue = intval(Input::get('user'));
             $book->issue_no = 1;
             if ($book->save()) {
+                $new=new Transaction;
+                $new->book_id =$book->id;
+                $new->user_id = intval(Input::get('user'));
+                $new->transaction_type ="ISSUE";
+                $new->save();
                 return 'Book Successfully Issued';
             } else {
                 return 'Error occured while issuing. Please try again.';
@@ -497,6 +502,11 @@ class HomeController extends BaseController {
                 $book->issue=$user_id;
                 $book->issue_no += 1;
                 $book->save();
+                $new=new Transaction;
+                $new->book_id =$book_id;
+                $new->user_id = $user_id;
+                $new->transaction_type ="REISSUE";
+                $new->save();
                 return 'Book successfully reissued.';
             }
             else {
@@ -520,6 +530,11 @@ class HomeController extends BaseController {
         $book->return_date=null;
         $book->issue_Date=null;
         $book->save();
+        $new=new Transaction;
+        $new->book_id =$book_id;
+        $new->user_id = $user_id;
+        $new->transaction_type ="LB_R";
+        $new->save();
         LostBook::where('book_id', $book_id)->first()->delete();
         return 'Book details updated';
     }

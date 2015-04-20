@@ -57,7 +57,7 @@
 <div class="modal-footer">
     @if($book->lost !== 1)
     <button type="button" class="btn btn-flat btn-info" onclick="ret({{ $book->id  }})">Return</button>
-    <button type="button" class="btn btn-flat btn-warning">Reissue</button>
+    <button type="button" class="btn btn-flat btn-warning" onclick="reissue({{ $book->id  }})">Reissue</button>
     @else
     <button type="button" class="btn btn-flat  btn-danger" onclick="lost({{ $book->id }})">Return Lost Book</button>
     @endif

@@ -102,7 +102,8 @@
             <div class="content-panel pn">
 
                 <div style="min-height:106px;margin-left:10">
-                    <h3>{{ $entry->title}}</h3>
+
+                    <h3><i class="fa fa-angle-right"> </i> {{ $entry->title}}</h3>
                     <h6>{{ $entry->authors}}</h6>
                 </div>
                 <div class="panel panel-default">
@@ -122,11 +123,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
                         <h4 class="modal-title" id="myModalLabel">Details</h4>
                     </div>
 
                     <div class="modal-body">
+
+
                         <a class="btn btn-primary btn-sm pull-right" href="todo_list.html#">Google preview</a>
                         <table class="table table-hover">
                             <h4><i class="fa fa-angle-right"></i> Basic details</h4>
@@ -152,12 +155,17 @@
                             <tr>
                                 <td>Available copies</td>
                                 <td>{{ $countofavailable }}</td>
+                                <script type="text/javascript" src="http://books.google.com/books/previewlib.js"></script>
+                                <script type="text/javascript">
+                                    GBS_insertPreviewButtonPopup('ISBN:0738531367');
+                                </script>
+
                             </tr>
                             @foreach ($results as $item)
                                 @if ($item->title == $entry->title && $item->authors == $entry->authors && $item->available == 1)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td><button id="{{ $item->id }}" value="{{ $item->id }}">Ask</button></td>
+                                        <td><button type="button" id="{{ $item->id }}" value="{{ $item->id }}">Ask</button></td>
                                     </tr>
                                 @endif
                             @endforeach
@@ -240,31 +248,19 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('button').click(function() {
-                var tobevoted = parseInt(this.id);
-                var action = this.value;
-                if(this.disabled == false) {
-                    this.disabled = true;
-                }
-                console.log(action);
-                alert("ok");
-            });
-        });
 
-    </script>
 
     <script>
          $('button').click(function(event) {
+             if(this.type != "submit") {
                 event.preventDefault();
                 var tobesent = parseInt(this.value);
                 $.ajax({
                     url: "{{ route('bookstransfer') }}",
                     method: 'POST',
                     dataType    : 'json',
-                    encode      : true
-                    data: {'id': tobesent}
+                    encode      : true,
+                    data: {id: tobesent}
                 })
                  .success(function (data) {
                     alert("key: " + data.pin);
@@ -272,6 +268,7 @@
                 .fail(function () {
                     alert('There was an error. Please Try Again');
                 });
+             };
         });
     </script>
 

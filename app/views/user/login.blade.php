@@ -39,7 +39,8 @@ MAIN CONTENT
                 <input type="text" class="form-control" placeholder="Webmail ID" autofocus name="webmail" value="{{ Input::old('webmail') }}">
                 <br>
                 <input type="password" class="form-control" placeholder="Password" name="password">
-                    <select name="server">
+                    <br>
+                    <select class="form-control" name="server">
                         <option value="9">Naambor</option>
                         <option value="10">Disang</option>
                         <option value="11">Tamdil</option>

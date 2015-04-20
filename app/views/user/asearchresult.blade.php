@@ -179,7 +179,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
                         <h4 class="modal-title" id="myModalLabel">Details</h4>
                     </div>
 
@@ -214,7 +214,7 @@
                                 @if ($item->title == $entry->title && $item->authors == $entry->authors && $item->available == 1)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td><button id="{{ $item->id }}" value="{{ $item->id }}">Ask</button></td>
+                                        <td><button type="button" id="{{ $item->id }}" value="{{ $item->id }}">Ask</button></td>
                                     </tr>
                                 @endif
                             @endforeach
@@ -278,20 +278,23 @@
     </script>
     <script>
          $('button').click(function(event) {
+             if(this.type != "submit") {
                 event.preventDefault();
                 var tobesent = parseInt(this.value);
                 $.ajax({
                     url: "{{ route('bookstransfer') }}",
                     method: 'POST',
-                    data: {'id': tobesent}
+                    data: {'id': tobesent},
+                    dataType: 'json',
+                    encode: 'true'
                 })
-                 .success(function (result) {
-                    alert(result);
-                    Key:{{$book->mutualtransfer->pin}}
+                 .success(function (data) {
+                    alert("the PIN is: " + data.pin);
+
                 })
                 .fail(function () {
                     alert('There was an error. Please Try Again');
-                });
+                });};
         });
     </script>
 

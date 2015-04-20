@@ -90,7 +90,30 @@ class UserController extends BaseController {
         Auth::user()->logout();
         return Redirect::route('user_bsearch');
     }
+    public function available()
+    {
+        $data = array();
+        $data['id'] = Input::get('id');
+        $data['action'] = Input::get('action');
+        if ($data['action'] == "navail") {
+            $result = Book::where('id',(int)$data['id'])->first();
+            if (sizeof($result)!=0) {
+                $result->available = 1;
+                $result->save();
+            }
 
+        }
+        else {
+            $result = Book::where('id',(int)$data['id'])->first();
+            if (sizeof($result) !=0) {
+                $result->available = 0;
+                $result->save();
+            }
+
+        }
+        $data['message'] = 'Success!';
+        echo json_encode($data);
+    }
 
     public function add_donate_book()
     {
@@ -785,7 +808,7 @@ class UserController extends BaseController {
         $mutualtransfer->owner_id=$book->issue;
         $mutualtransfer->status=0;
         $mutualtransfer->pin=Crypt::encrypt(str_random(5));
-        $data['pin'] = $mutualtransfer->pin;
+        $data['pin'] = Crypt::decrypt($mutualtransfer->pin);
         $mutualtransfer->save();
         $book->save();
         echo json_encode($data);

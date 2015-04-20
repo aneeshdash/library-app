@@ -14,7 +14,7 @@
     <link href="{{asset('bootstrap/css/bootstrap.css')}}" rel="stylesheet">
     <!--external css-->
     <link href="{{asset('font-awesome-4.3.0/css/font-awesome.css')}}" rel="stylesheet" />
-
+    <link rel="shortcut icon" href="{{ asset('user-assets/img/logo-iitg.gif')}}">
     <!-- Custom styles for this template -->
     <link href="{{asset('user-assets/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('user-assets/css/style-responsive.css')}}" rel="stylesheet">
@@ -66,7 +66,7 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
 
-                <p class="centered"><a href="#"><img src="{{asset('user-assets/img/ui-sam.jpg')}}" class="img-circle" width="60"></a></p>
+                <p class="centered"><a href="#"><img src="{{asset('user-assets/img/logo-iitg.gif')}}" class="img-circle" width="60"></a></p>
                 <h5 class="centered">IITG CSE Library</h5>
 
                 <li class="sub-menu">

@@ -22,6 +22,7 @@ Route::post('advanced_search', ['as' => 'validate_asearch', 'uses' => 'UserContr
 //control for mutual transfer
 Route::get('books', array('as'=>'books','uses'=>'UserController@index'));
 Route::post('books', array('as'=>'bookstransfer','uses'=>'UserController@transfer'));
+Route::post('available', array('as'=>'available','uses'=>'UserController@available'));
 
 //control for upvoting and suggestion
 Route::get('new_additions', ['as' => 'user_new_additions', 'uses' => 'UserController@new_additions']);

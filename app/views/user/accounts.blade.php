@@ -19,17 +19,18 @@
                         <div class="white-header" style="color:Black;">
                             <h5>USERNAME</h5>
                         </div>
+                        
                         <p><img src="{{asset('user-assets/img/icon.jpg')}}" class="img-circle" width="80"></p>
-                        <p><b>Sweta Agrawal</b></p>
+                        <p><b>{{Auth::user()->get()->name}}</b></p>
                         <div class="row">
                             <div class="col-md-6" style="color:Black;">
                                 <p class="small mt">BATCH OF</p>
                                 <p>2017</p>
                             </div>
                             <div class="col-md-6" style="color:Black;">
-                                <p class="small mt">Roll no.:</p>
+                                 <p class="small mt">Roll no.:</p>
 
-                                <p>130101089</p>
+                                <p>{{Auth::user()->get()->roll}}</p>
                             </div>
                         </div>
                         </div>
@@ -42,86 +43,35 @@
 
                     <div class="content-panel">
                         <table class="table table-striped table-advance table-hover">
-                            <h4><i class="fa fa-angle-right"></i> Advanced Table</h4>
+                            <h4><i class="fa fa-angle-right"></i>Accounts Table</h4>
                             <hr>
                             <thead>
                             <tr>
-                                <th><i class="fa fa-bullhorn"></i> Company</th>
-                                <th class="hidden-phone"><i class="fa fa-question-circle"></i> Descrition</th>
-                                <th><i class="fa fa-bookmark"></i> Profit</th>
+                                <th><i class="fa fa-bullhorn"></i> Title</th>
+                                <th class="hidden-phone"><i class="fa fa-question-circle"></i> Issue Date</th>
+                                <th><i class="fa fa-bookmark"></i> Return date</th>
                                 <th><i class=" fa fa-edit"></i> Status</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="basic_table.html#">Company Ltd</a></td>
-                                <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                <td>12000.00$ </td>
-                                <td><span class="label label-info label-mini">Due</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="basic_table.html#">
-                                        Dashgum co
-                                    </a>
-                                </td>
-                                <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                <td>17900.00$ </td>
-                                <td><span class="label label-warning label-mini">Due</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="basic_table.html#">
-                                        Another Co
-                                    </a>
-                                </td>
-                                <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                <td>14400.00$ </td>
-                                <td><span class="label label-success label-mini">Paid</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="basic_table.html#">
-                                        Dashgum ext
-                                    </a>
-                                </td>
-                                <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                <td>22000.50$ </td>
-                                <td><span class="label label-success label-mini">Paid</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="basic_table.html#">Total Ltd</a></td>
-                                <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                <td>12120.00$ </td>
-                                <td><span class="label label-warning label-mini">Due</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                </td>
-                            </tr>
-                            </tbody>
+                                
+                                @foreach (Book::where('issue',Auth::user()->get()->id)->get() as $book)
+                                    <tr>
+                                        <td><a href="basic_table.html#">:{{$book->title}}</a></td>
+                                        <td class="hidden-phone">{{$book->issue_date}} </td>
+                                        <td>{{$book->return_date}}</td>
+                                        @if($book->available)
+                                        <td><button id="{{$book->id}}" class="btn btn-lg btn-block btn-danger" value="avail" role="button"> Available for Mutual Transfer</button></td>
+                                        @else
+                                        <td><button id="{{$book->id}}" class="btn btn-lg btn-block btn-success" value="navail" role="button"> Make Available for Mutual Transfer</button></td>
+                                
+                                        @endif
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                             </tbody>
                         </table>
                     </div><!-- /content-panel -->
 
@@ -220,6 +170,7 @@
     <script src="{{asset('user-assets/js/sparkline-chart.js')}}"></script>
     <script src="{{asset('user-assets/js/zabuto_calendar.js')}}"></script>
 
+
     <script type="text/javascript">
         $(document).ready(function () {
             var unique_id = $.gritter.add({
@@ -236,6 +187,53 @@
             });
 
             return false;
+        });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+            $('button').click(function(event) {
+                var tobechanged = parseInt(this.id);
+                var extra = this.id;
+                var action = this.value;
+                var formData = {
+                    'id' : tobechanged,
+                    'action' : action,
+                };
+                $.ajax({
+                    type        : 'POST',
+                    url         : "{{ route('available') }}",
+                    data        : formData, 
+                    dataType    : 'json',
+                    encode      : true
+                })
+                    .done(function(data) {
+                        console.log(data.user_id);
+                        console.log(data.id);
+                        // console.log(data.message);
+                        console.log("succeeded");
+                        var a = $("#"+extra);
+                        if(a.hasClass("btn-success"))
+                        {
+                            a.removeClass("btn-success");
+                            a.addClass("btn-danger");
+                            a.text("Available for mutual transfer");
+                            a.val("avail");
+                        }
+                        else
+                        {
+                            a.removeClass("btn-danger");
+                            a.addClass("btn-success");
+                            a.text("Make available for mutual transfer");
+                            a.val("navail");
+                        }
+                    })
+                    .fail(function(data) {
+                        console.log("failed");
+                        console.log(data.message);
+                        console.log(data);
+                    });
+            });
         });
     </script>
 
