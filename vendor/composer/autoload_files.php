@@ -6,9 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Random.php',
     $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
     $vendorDir . '/ircmaxell/password-compat/lib/password.php',
-    $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Random.php',
     $vendorDir . '/guzzlehttp/streams/src/functions.php',
     $vendorDir . '/wp-cli/php-cli-tools/lib/cli/cli.php',
     $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',

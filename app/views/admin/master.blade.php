@@ -1,3 +1,20 @@
+<?php 
+      $array = array(
+          "BTECH" => 0,
+          "MTECH" => 0,
+          "PHD"   => 0,
+          "FAC"   => 0,
+          "MSC"   => 0
+        );
+      $cnt = DB::table('students_visiting')->count();
+      $userid = DB::table('students_visiting')->get();
+      foreach($userid as $user)
+      {
+        $type = DB::table('users')->where('id',$user->user_id)->pluck('type');
+          $array["$type"]++;
+      }
+        
+    ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +41,12 @@
     <![endif]-->
     @yield('head')
 </head>
-<body class="skin-yellow">
+<body class="skin-black">
 <!-- Site wrapper -->
 <div class="wrapper">
 
     <header class="main-header">
-        <a href="../../index2.html" class="logo">Admin Panel</a>
+        <a href="{{ route('adminhome') }}" class="logo">Admin Panel</a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
@@ -42,6 +59,68 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <!-- User Account: style can be found in dropdown.less -->
+                    <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown tasks-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-flag-o"></i>
+                  <span class="label label-danger">{{ $cnt }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header"> You have &nbsp  <strong><span style="color:red">{{ $cnt }}</span></strong> &nbsp  members visiting tomorrow</li>
+                  <li>
+                    <!-- inner menu: contains the actual data -->
+                    <ul class="menu">
+                      <li><!-- Task item -->
+                        <a >
+                          <h3>
+                           Btech students  
+                            <strong class="pull-right">{{$array["BTECH"]}}</strong>
+                          </h3>
+                          
+                        </a>
+                      </li><!-- end task item -->
+                      <li><!-- Task item -->
+                        <a >
+                          <h3>
+                            Mtech students
+                            <strong class="pull-right">{{$array["MTECH"]}}</strong>
+                          </h3>
+                          
+                        </a>
+                      </li><!-- end task item -->
+                      <li><!-- Task item -->
+                        <a >
+                          <h3>
+                            Faculty 
+                            <strong class="pull-right">{{$array["FAC"]}}</strong>
+                          </h3>
+                          
+                        </a>
+                      </li><!-- end task item -->
+                      <li><!-- Task item -->
+                        <a >
+                          <h3>
+                            PHD
+                            <strong class="pull-right">{{$array["PHD"]}}</strong>
+                          </h3>
+                          
+                        </a>
+                      </li>
+                      <li><!-- Task item -->
+                        <a >
+                          <h3>
+                            MSC
+                            <strong class="pull-right">{{$array["MSC"]}}</strong>
+                          </h3>
+                          
+                        </a>
+                      </li><!-- end task item -->
+                    </ul>
+                  </li>
+                 
+                </ul>
+              </li>
+
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="hidden-xs">Admin</span>
@@ -90,18 +169,23 @@
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="treeview">
-                    <a href="{{ route('admin') }}">
-                        <i class="fa fa-table"></i> <span>Issue & Reissue</span>
+                    <a href="{{ route('adminhome') }}">
+                        <i class="fa fa-home"></i> <span>Home</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="{{ route('adminupdate') }}">
-                        <i class="fa fa-envelope"></i> <span>Post Update</span>
+                    <a href="{{ route('adminuser') }}">
+                        <i class="fa fa-user"></i> <span>User Profile</span>
                     </a>
                 </li>
-                  <li class="treeview">
+                <li class="treeview">
                     <a href="{{ route('adminlostbook') }}">
-                        <i class="fa fa-book"></i><span>Lost Books</span>
+                        <i class="fa fa-exclamation-triangle"></i> <span>Lost Book</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="{{ route('newadditions') }}">
+                        <i class="fa fa-book"></i><span>New Additions</span>
                     </a>
                 </li>
                 <li class="treeview">
@@ -111,7 +195,14 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{ route('tabusers') }}"><i class="fa fa-circle-o"></i>Users</a></li>
-                        <li><a href="tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
+                        <li><a href="{{ route('tabbooks') }}"><i class="fa fa-circle-o"></i>Books</a></li>
+                        <li><a href="{{ route('tabadmin') }}"><i class="fa fa-circle-o"></i>Admin</a></li>
+                        <li><a href="{{ route('tablost') }}"><i class="fa fa-circle-o"></i>LostBooks</a></li>
+                        <li><a href="{{ route('tabcat') }}"><i class="fa fa-circle-o"></i>Category</a></li>
+                        <li><a href="{{ route('tabpub') }}"><i class="fa fa-circle-o"></i>Publication</a></li>
+                        <li><a href="{{ route('tabrules') }}"><i class="fa fa-circle-o"></i>Rules</a></li>
+                        <li><a href="{{ route('tabnewadd') }}"><i class="fa fa-circle-o"></i>New Additions</a></li>
+                        <li><a href="{{ route('tabenv') }}"><i class="fa fa-circle-o"></i>Environment Variables</a></li>
                     </ul>
                 </li>
             </ul>

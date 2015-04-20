@@ -12,7 +12,9 @@
         "indatus/dispatcher": "1.4.*@dev",
         "maatwebsite/excel": "1.*",
         "barryvdh/laravel-dompdf": "0.4.*",
-        "pda/pheanstalk": "dev-master"
+        "pda/pheanstalk": "dev-master",
+        "dingo/api": "0.8.*",
+        "tymon/jwt-auth": "0.4.*"
 	},
 	"autoload": {
 		"classmap": [

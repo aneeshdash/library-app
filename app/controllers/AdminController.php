@@ -28,40 +28,9 @@ class AdminController extends BaseController {
     public function logout()
     {
         Auth::admin()->logout();
-        return Redirect::route('adminlogin');
+        return Redirect::route('adminhome');
     }
 
-    public function abcd()
-    {
-        $fp=fsockopen('ssl://202.141.80.13',995,$error,$errstr,10);
-        if($fp) {
-            $st = stream_set_blocking($fp, 1);
-            $trash = fgets($fp, 128); // Trash to hold the banner
-            fwrite($fp, "user $webmail\r\n"); // POP3 USER CMD
-            stream_set_timeout($fp,2);
-            $user = fgets($fp);
-            $u = 'hi';
-            if (trim($user) == '+OK') {
-                fwrite($fp, "pass $password\r\n");
-                stream_set_timeout($fp,2);
-                $pass = fgets($fp, 128);
-                if (trim($pass) == '+OK Logged in.') {
-                    $u = 'Successfully Logged In';
-                } else {
-                    $u = 'Wrong Credentials';
-                }
-            } else {
-                $u = 'Try Again';
-            }
-            fwrite($fp,"quit\r\n");
-            stream_set_timeout($fp,2);
-            fclose($fp);
-        }
-        else {
-            $u='Connection Unsuccessful';
-        }
-        return View::make('admin.test')->with('data', $u);
-    }
 
     public function test()
     {
@@ -70,8 +39,15 @@ class AdminController extends BaseController {
 //            $message->from('a.dash@iitg.ernet.in', 'Aneesh Dash');
 //            $message->to('aneeshdash@gmail.com', 'Aneesh Dash')->subject('Hello!');
 //        });
-        Log::info('hi');
-        return View::make('admin.home');
+//        Log::info('hi');
+//        $book=Book::where('return_date','<',Carbon::now()->addDays(10))->first();
+        $book=Book::whereBetween('return_date',array(Carbon::now(),Carbon::now()->addDays(2)))->groupBy('issue')->first();
+//        $book->return_date=Carbon::now()->addDays(5);
+//        $book->save();
+        foreach(Book::whereBetween('return_date',array(Carbon::now(),Carbon::now()->addDays(2)))->groupBy('issue')->get() as $us) {
+            Log::alert($us->issue);
+        }
+        return View::make('admin.home')->with('book', $book);
     }
 
     public function update()
@@ -86,14 +62,19 @@ class AdminController extends BaseController {
 
     public function userprofile()
     {
-        return View::make('admin.profile')->with('user', User::find(1));
+        return View::make('admin.profileinp');
     }
 
     public function postuserprofile()
     {
         $roll=Input::get('roll');
         $user=User::where('roll', intval($roll))->first();
-        return View::make('admin.profile')->with('user', $user);
+        if($user !== null) {
+            return View::make('admin.profile')->with('user', $user);
+        }
+        else {
+            return Redirect::route('adminuser')->with('error', 'User doesnot exist');
+        }
     }
 
     public function tabusers()
@@ -104,5 +85,50 @@ class AdminController extends BaseController {
     public function tabbooks()
     {
         return View::make('admin.tables.books');
+    }
+
+    public function tablost()
+    {
+        return View::make('admin.tables.lost1');
+    }
+    public function tabadmin()
+    {
+        return View::make('admin.tables.admins');
+    }
+    public function tabnewadd()
+    {
+        return View::make('admin.tables.new_add');
+    }
+    public function tabcat()
+    {
+        return View::make('admin.tables.cat');
+    }
+    public function tabrules()
+    {
+        return View::make('admin.tables.rules');
+    }
+    public function tabenv()
+    {
+        return View::make('admin.tables.env');
+    }
+    public function tabpub()
+    {
+        return View::make('admin.tables.pub');
+    }
+    public function master()
+    {
+        return View::make('admin.master');
+    }
+    public function newadd()
+    {
+        return View::make('admin.newadd');
+    }
+    public function land()
+    {
+        return View::make('admin.landing');
+    }
+    public function profile()
+    {
+        return View::make('admin.profile');
     }
 }

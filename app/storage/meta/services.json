@@ -28,7 +28,8 @@
         "Ollieread\\Multiauth\\MultiauthServiceProvider",
         "Ollieread\\Multiauth\\Reminders\\ReminderServiceProvider",
         "Indatus\\Dispatcher\\ServiceProvider",
-        "Maatwebsite\\Excel\\ExcelServiceProvider"
+        "Maatwebsite\\Excel\\ExcelServiceProvider",
+        "Dingo\\Api\\Provider\\ApiServiceProvider"
     ],
     "eager": [
         "Illuminate\\Cookie\\CookieServiceProvider",
@@ -39,7 +40,8 @@
         "Illuminate\\View\\ViewServiceProvider",
         "Illuminate\\Workbench\\WorkbenchServiceProvider",
         "Ollieread\\Multiauth\\MultiauthServiceProvider",
-        "Maatwebsite\\Excel\\ExcelServiceProvider"
+        "Maatwebsite\\Excel\\ExcelServiceProvider",
+        "Dingo\\Api\\Provider\\ApiServiceProvider"
     ],
     "deferred": {
         "artisan": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

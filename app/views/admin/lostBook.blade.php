@@ -5,123 +5,142 @@
 @section('content')
 
 	<section class="content">
-	<?php
-    $new=DB('lost_book')::where('id',2)->first();.
-		$old=DB::table('books')->where('id',$new->book_id)->first();
-    $usr=DB::table('users')->where('id',$new->user_id)->pluck('name');
-    $pub=DB::table('publications')->where('id',$old->publication_id)->pluck('name');
-		?>
-		<div class="row">
-            <div class="col-md-6">
+
+
+    <h1 class="page-header">Requested</h1>
+    <div class="row">
+	@foreach(DB::table('lost_book')->where('status','REQUESTED')->get() as $book)
+		
+            <div class="col-md-4">
               <!-- small box -->
-              	<div class="small-box bg-aqua">
+              	<div class="small-box bg-red" >
                 	<div class="inner">
-                  		<h3>{{ $old->title }}</h3>
-                  		<p>{{ $old->authors }}</p>
+                  		<h4>{{ DB::table('books')->where('id',$book->book_id)->pluck('title') }}</h4>
+                  		<h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
                 	</div>
                   
-                	<a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                	<a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
                 
               </div>
             </div>
-        </div>
-
-        <!-- Button trigger modal -->
 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span style="margin-left:35%">Old Book</span> <span class="pull-right" style="margin-right:15%">New Book</span></h4>
-      </div>
-      <div class="modal-body">
-          <div class="row">
-            <div class="col-md-4">
-              Name of the Book:
-            </div>
-            <div class="col-md-4">
-              {{ $old->title }}
-            </div>
-            <div class="col-md-4">
-              {{ $new->title }}
-            </div>
-          </div> 
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              Authors of the book:
-            </div>
-            <div class="col-md-4">
-              {{ $old->authors }}
-            </div>
-            <div class="col-md-4">
-              {{ $new->authors }}
-            </div>
-          </div> 
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              Edition of book:
-            </div>
-            <div class="col-md-4">
-              {{ $old->edition }}
-            </div>
-            <div class="col-md-4">
-              {{ $new->edition }}
-            </div>
-          </div> 
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              ISBN of the book:
-            </div>
-            <div class="col-md-4">
-              {{ $old->ISBN }}
-            </div>
-            <div class="col-md-4">
-             {{ $new->ISBN }}
-            </div>
-          </div> 
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              Publication of the book:
-            </div>
-            <div class="col-md-4">
-              {{ $new->publication }}
-            </div>
-            <div class="col-md-4">
-             {{ $pub }}
-            </div>
-          </div> 
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              Code of the book:
-            </div>
-            <div class="col-md-4">
-              {{ $new->code }}
-            </div>
-            <div class="col-md-4">
-             {{ $old->code  }}
-            </div>
-          </div> 
-          <br />          
-      </div>
-      <div class="modal-footer">
-        
-        Book lost by  <strong>{{ $usr }}</strong>
+@endforeach
+</div>
 
-      </div>
+ <h1 class="page-header">Accepted</h1>
+ <div class="row">
+@foreach(DB::table('lost_book')->where('status','ACCEPTED')->get() as $book)
+    
+            <div class="col-md-4">
+              <!-- small box -->
+                <div class="small-box bg-green" >
+                  <div class="inner">
+                      <h4>{{ DB::table('books')->where('id',$book->book_id)->pluck('title') }}</h4>
+                      <h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
+                  </div>
+                  
+                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                
+              </div>
+            </div>
+
+@endforeach
+</div> 
+
+<h1 class="page-header">Updated</h1>
+ <div class="row">
+@foreach(DB::table('lost_book')->where('status','UPDATED')->get() as $book)
+    
+            <div class="col-md-4">
+              <!-- small box -->
+                <div class="small-box bg-yellow" >
+                  <div class="inner">
+                      <h4>{{ DB::table('books')->where('id',$book->book_id)->pluck('title') }}</h4>
+                      <h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
+                  </div>
+                  
+                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                
+              </div>
+            </div>
+
+@endforeach
+</div>
+
+<h1 class="page-header">Rejected</h1>
+ <div class="row">
+@foreach(DB::table('lost_book')->where('status','REJECTED')->get() as $book)
+    
+            <div class="col-md-4">
+              <!-- small box -->
+                <div class="small-box bg-aqua" >
+                  <div class="inner">
+                      <h4>{{ DB::table('books')->where('id',$book->book_id)->pluck('title') }}</h4>
+                      <h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
+                  </div>
+                  
+                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                
+              </div>
+            </div>
+
+@endforeach
+</div>
+
+     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 800px;" >
+    <form  role="form" id="lost_form">
+    <div class="modal-content"  id="lost_book">
+      
     </div>
+  </form>
   </div>
 </div>
     </section>
 	@endsection
 
 @section('script')
-		
+		 <script type="text/javascript">
+    
+
+        function lost(code) {
+            $.ajax({
+                url: '{{ route('func_lost_book') }}',
+                method: 'POST',
+                data: {code: code}
+            })
+                    .success(function (result) {
+                        $('#lost_book').html(result);
+                        $('#myModal').modal('show');
+//                        alert(result);
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+        }
+
+      
+      $('#lost_form').on('submit', function(e) {
+            
+            e.preventDefault();
+      $.ajax({
+                url: "{{ route('func_update_lostbook') }}",
+                method: 'POST',
+                data: $('#lost_form').serialize()
+            })
+                    .success(function () {
+                        alert("Tables were successfully updated");
+                        $('#myModal').modal('hide');
+                        location.reload();
+
+                       
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+
+    });
+</script>
+      
     @endsection    

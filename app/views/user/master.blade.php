@@ -18,6 +18,8 @@
     <!-- Custom styles for this template -->
     <link href="{{asset('user-assets/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('user-assets/css/style-responsive.css')}}" rel="stylesheet">
+    <link href="{{asset('user-assets/css/pace-theme-barber-shop.css')}}" rel="stylesheet" />
+    <script src="{{asset('user-assets/js/pace.min.js')}}"></script>
     @yield('link')
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -39,13 +41,17 @@
             <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
         </div>
         <!--logo start-->
-        <a href="{{route('home')}}" class="logo"><b>Online Library</b></a>
+        <a href="{{route('user_bsearch')}}" class="logo"><b>CSE Library</b></a>
         <!--logo end-->
 
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="{{route('lock_screen')}}">Lock Screen</a></li>
-                <li><a class="logout" href="{{route('login')}}">Logout</a></li>
+                @if(Auth::user()->guest())
+                <li><a class="logout" href="{{route('login')}}">Login</a></li>
+                @else
+                <li><a class="logout" href="{{route('lock_screen')}}">Lock</a></li>
+                <li><a class="logout" href="{{route('logout')}}">Logout</a></li>
+                @endif
             </ul>
         </div>
     </header>
@@ -63,29 +69,33 @@
                 <p class="centered"><a href="#"><img src="{{asset('user-assets/img/ui-sam.jpg')}}" class="img-circle" width="60"></a></p>
                 <h5 class="centered">IITG CSE Library</h5>
 
-                <li class="mt">
-                    <a class="@yield('user-home')" href="{{route('home')}}">
-                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                        <span>&nbsp&nbsp&nbspHome</span>
+                <li class="sub-menu">
+                    <a class="@yield('user-search')" href="javascript:;" >
+                        <i class="fa fa-search"></i>
+                        <span>Search</span>
                     </a>
+                    <ul class="sub">
+                        <li class="@yield('user-bsearch')"><a href="{{route('user_bsearch')}}">Basic</a></li>
+                        <li class="@yield('user-advanced_search')"><a href="{{route('user_advanced_search')}}">Advanced</a></li>
+                    </ul>
                 </li>
-
+                @if(!Auth::user()->guest())
                 <li  class="sub-menu">
-                    <a class="@yield('user-accounts')" href="{{route('accounts')}}" >
+                    <a class="@yield('user-accounts')" href="{{route('user_accounts')}}" >
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         <span>&nbsp&nbsp&nbspMy Account</span>
                     </a>
                 </li>
 
                 <li class="sub-menu">
-                    <a class="@yield('user-wish_list')" href="{{route('wish_list')}}" >
+                    <a class="@yield('user-wish_list')" href="{{route('user_wish_list')}}" >
                         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
                         <span>&nbsp&nbsp&nbspWishList</span>
                     </a>
                 </li>
 
                 <li class="sub-menu">
-                    <a class="@yield('user-queued_books')" href="{{route('queued_books')}}" >
+                    <a class="@yield('user-queued_books')" href="{{route('user_queued_books')}}" >
                         <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
                         <span>&nbsp&nbsp&nbspQueued Books</span>
                     </a>
@@ -96,12 +106,26 @@
                         <span>Forms</span>
                     </a>
                     <ul class="sub">
-                        <li class="@yield('user-lost_book')"><a href="{{route('lost_book')}}">Lost Book</a></li>
-                        <li class="@yield('user-donate_book')"><a href="{{route('donate_book')}}">Donate Book</a></li>
+                        <li class="@yield('user-lost_book')"><a href="{{route('user_lost_book')}}">Lost Book</a></li>
+                        <li class="@yield('user-donate_book')"><a href="{{route('user_donate_book')}}">Donate Book</a></li>
+                        <li class="@yield('user-feedback')"><a href="{{route('feedback')}}">Feedback</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a class="@yield('user-contacts')" href="{{route('contacts')}}" >
+                    <a class="@yield('user-new-additions')" href="{{route('user_new_additions')}}" >
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        <span>&nbsp&nbsp&nbspNew Additions</span>
+                    </a>
+                </li>
+                @endif
+                <li class="sub-menu">
+                    <a class="@yield('user-new-arrivals')" href="{{route('new_arrivals')}}" >
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        <span>&nbsp&nbsp&nbspNew Arrivals</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a class="@yield('user-contacts')" href="{{route('user_contacts')}}" >
                         <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
                         <span>&nbsp&nbsp&nbspContacts</span>
                     </a>
@@ -118,18 +142,15 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper site-min-height">
-            <!--           	<h3><i class="fa fa-angle-right"></i> Blank Page</h3>
-                          <div class="row mt">
-                              <div class="col-lg-12">
-                              <p>Place your content here.</p>
-                              </div>
-                          </div> -->
             @yield('main_content')
         </section><!--/wrapper-->
     </section><!-- /MAIN CONTENT -->
 
+
     <!--main content end-->
     <!--footer start-->
+
+    <!-- <footer class=" site-footer navbar navbar-inverse navbar-fixed-bottom " id="sticky-footer"> -->
     <footer class=" site-footer ">
         <div class="text-center">
             2015 - IITG CSE LIBRARY
@@ -155,16 +176,11 @@
 <script src="{{asset('user-assets/js/common-scripts.js')}}"></script>
 
 
-<!--script for this page-->
 @yield('scripts')
-<script>
-    //custom select box
 
-    $(function(){
-        $('select.styled').customSelect();
-    });
 
-</script>
+
+
 
 
 </body>

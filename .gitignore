@@ -7,5 +7,6 @@ composer.lock
 .DS_Store
 Thumbs.db
 .idea
+app/config/local
 =======
 >>>>>>> 17862824ddde7ff65bdb15757c390feabf15870d

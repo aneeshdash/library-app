@@ -126,6 +126,7 @@ return array(
         'Ollieread\Multiauth\Reminders\ReminderServiceProvider',
         'Indatus\Dispatcher\ServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Dingo\Api\Provider\ApiServiceProvider',
 
 	),
 
@@ -194,6 +195,8 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
         'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
+        'Carbon'            => 'Carbon\Carbon',
+        'API'               => 'Dingo\Api\Facade\API'
 
 	),
 

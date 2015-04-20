@@ -16,17 +16,19 @@
 
             <div class="modals">
                 <div class="row">
+                    <form action="{{ route('adminuser') }}" method="post" id="chkusr">
                     <div class="col-md-4">
                         <div class="pull-right">
                             Roll No.
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" class="form-control" id="Roll">
+                        <input type="number" class="form-control" id="Roll" name="roll" required>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-flat btn-success" id="showmenu"  data-toggle="modal">Submit</button>
+                        <input type="submit" class="btn btn-flat btn-success" value="Submit">
                     </div>
+                        </form>
                 </div>
             </div>
 
@@ -35,7 +37,7 @@
 
 
 
-            <div class="panel panel-info menu" style="display:none;">
+            <div class="panel panel-info menu">
                 <div class="panel-heading">
                     <div class="modals">
                         <div class="row">
@@ -118,7 +120,7 @@
             </div>
             </br>
 
-            <div class="menu" style="display: none;">
+            <div class="menu">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="pull-right">
@@ -138,7 +140,7 @@
 
 
             <!-- Default box -->
-            <div class="box menu" style="display:none">
+            <div class="box menu">
                 <!--Expand and collapse buttonss-->
                 <div class="box-header with-border">
                     <h3 class="box-title">Books</h3>
@@ -427,6 +429,83 @@
                         alert('There was an error. Please Try Again');
                     });
         }
+
+        function edit() {
+            $.ajax({
+                url: '{{ route('func_edit') }}',
+                method: 'POST',
+                data: $('#edit').serialize() + '&type=user'
+            })
+                    .success(function (result) {
+                        alert(result);
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+        }
+
+        $('#edit').on('submit', function(e) {
+            $('#editModal').modal('hide');
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('func_edit') }}',
+                method: 'POST',
+                data: $('#edit').serialize()
+            })
+                    .success(function (result) {
+                        alert(result);
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+        });
+
+        function ret(book) {
+            user=$('#user').val();
+            $.ajax({
+                url: '{{ route('func_ret_book') }}',
+                method: 'POST',
+                data: { user: user, book: book }
+            })
+                    .success(function (result) {
+                        alert(result);
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+        }
+
+        function reissue(book) {
+            user=$('#user').val();
+            $.ajax({
+                url: '{{ route('func_reissue') }}',
+                method: 'POST',
+                data: { user: user, book: book }
+            })
+                    .success(function (result) {
+                        alert(result);
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+        }
+
+        $('#lost_form').on('submit', function(e) {
+            e.preventDefault();
+            user=$('#user').val();
+            $.ajax({
+                url: '{{ route('func_ret_book') }}',
+                method: 'POST',
+                data: $('#lost_form').serialize()
+            })
+                    .success(function (result) {
+                        alert(result);
+                    })
+                    .fail(function () {
+                        alert('There was an error. Please Try Again');
+                    });
+        });
+
     </script>
 
 

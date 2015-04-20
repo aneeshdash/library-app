@@ -11,4 +11,5 @@
 |
 */
 
-//Artisan::add(new ReturnReminder);
+Artisan::add(new ReturnReminder);
+Artisan::add(new bookQueue);

@@ -161,25 +161,25 @@
                         <div class="form-group">
                             <label for="firstname" class="col-sm-3 control-label">Name:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="new-name" placeholder="Enter Name" required>
+                                <input type="text" name="name" class="form-control" id="new-name" placeholder="Enter Name" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-3 control-label">Webmail:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="new-webmail" placeholder="Enter Webmail" required>
+                                <input type="text" name="webmail" class="form-control" id="new-webmail" placeholder="Enter Webmail" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-3 control-label">Roll Number:</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" id="new-roll" placeholder="Enter Roll Number" required>
+                                <input type="number" name="roll" class="form-control" id="new-roll" placeholder="Enter Roll Number" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-3 control-label">Category</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="new-cat">
+                                <select class="form-control" name="cat" id="new-cat">
                                     <option value="BTECH">BTECH</option>
                                     <option value="MTECH">MTECH</option>
                                     <option value="PHD">PHD</option>
@@ -241,7 +241,7 @@
             $('#fine').html(data[4]);
             $('#cat').val(cat);
             $('#user_id').val(user_id);
-            row=id;
+             row=id;
             $('#editModal').modal('show');
         }
 
@@ -259,7 +259,7 @@
             $.ajax({
                 url: '{{ route('func_edit') }}',
                 method: 'POST',
-                data: $('#edit').serialize()
+                data: $('#edit').serialize() + "&table=user"
             })
                     .success(function (result) {
                         alert(result);
@@ -280,7 +280,7 @@
             $.ajax({
                 url: '{{ route('func_new') }}',
                 method: 'POST',
-                data: $('#new').serialize()
+                data: $('#new').serialize() + "&table=user"
             })
                     .success(function (result) {
                         alert(result);
