@@ -19,7 +19,7 @@
                   		<h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
                 	</div>
                   
-                	<a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                	<a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->book_id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
                 
               </div>
             </div>
@@ -40,7 +40,7 @@
                       <h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
                   </div>
                   
-                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->book_id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
                 
               </div>
             </div>
@@ -60,7 +60,7 @@
                       <h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
                   </div>
                   
-                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->book_id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
                 
               </div>
             </div>
@@ -80,7 +80,7 @@
                       <h5>{{ DB::table('books')->where('id',$book->book_id)->pluck('authors') }}</h5>
                   </div>
                   
-                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="#" class="small-box-footer" data-toggle="modal" data-target="#myModal" onclick="lost({{$book->book_id}})" >More info <i class="fa fa-arrow-circle-right"></i></a>
                 
               </div>
             </div>

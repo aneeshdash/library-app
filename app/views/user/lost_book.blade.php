@@ -208,7 +208,7 @@
                             document.getElementById('edition').value = authors.edition;
                             document.getElementById('isbn').value = authors.isbn;
                             document.getElementById('publication_select').value = authors.pub;
-                            document.getElementById("pub_field").style.display = "none";
+                            document.getElementById("pub_field").style.visibility = "hidden";
                         })
             }
         }

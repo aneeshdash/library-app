@@ -131,4 +131,25 @@ class AdminController extends BaseController {
     {
         return View::make('admin.profile');
     }
+    public function adminprof()
+    {
+        return View::make('admin.adminprof');
+    }
+    public function changepassword() {
+        $id = Input::get('id');
+        $old = Input::get('old');
+        $new = Input::get('new');
+        $admin=Admin::find(intval($id));
+        $hashedPassword = $admin->password;
+        if (Hash::check($old, $hashedPassword))
+        {
+            $newpassword = Hash::make($new);
+            $admin->password = $newpassword;
+            $admin->save();
+
+            return 'Password Successfully Updated';
+        }
+
+        return 'admin password incorrect';
+    }
 }

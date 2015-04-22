@@ -60,14 +60,19 @@ class ReturnReminder extends ScheduledCommand {
             $books = array();
             foreach($user->books as $book) {
                 if($book->return_date < Carbon::now()->addDays(2) && $book->return_date != null) {
-                    $books[] = $book->return_date < Carbon::now()->addDays(2) && $book->return_date != null;
+                    $books[] = $book->title;
                 }
             }
-        Mail::send('emails.returnReminder', array('user' => $user, 'books' => $books) ,function($message) use($user)
+        Mail::send('emails.returnReminder', array('user' => $user, 'books' => $books), function($message) use($user)
         {
             $message->from('a.dash@iitg.ernet.in', 'Aneesh Dash');
-            $message->to($user->webmail, $user->name)->subject('Book return reminder');
+            $message->to('a.dash@iitg.ernet.in', 'User')->subject('Book return reminder');
         });
+//        Mail::send('emails.testmail', array('name' => 'Kunaal Jain') ,function($message) use ($user)
+//        {
+//            $message->from('a.dash@iitg.ernet.in', 'Aneesh Dash');
+//            $message->to('aneeshdash@gmail.com', 'Aneesh Dash')->subject('Hello!');
+//        });
         }
         Log::info('done');
         return $this->info('Success');

@@ -21,7 +21,7 @@
                         <ul class="task-list">
 	                        
 <?php
-	$results = DB::table('admin_notifications')->orderBy('created_at', 'desc')->take(5)->get();
+	$results = DB::table('updates')->orderBy('created_at', 'desc')->take(5)->get();
 	foreach ($results as $item) {
 ?>
 		<li>
@@ -100,7 +100,29 @@
 	                        <li>
 	                            <div class="task-title">
 	                                <span>
-	                                    <strong style="font-size:15px">hey hi</strong>
+                                     <?php  $mtfs=Mutualtransfer::where('owner_id','=',Auth::user()->get()->id)->where('status','0')->get(); ?>
+	                                @if($mtfs->count()>0)
+                                        
+                                            @foreach ($mtfs as $mtf)      
+                                                                                               
+                                                <?php $book=$mtf->book();?>
+                                                Requester: {{$mtf->requester_id}} requests Book
+                                                Enter pin code to confirm transaction:
+                                                {{Form::open(array('action' => 'UserController@transferfinish'))}}
+                                                {{ Form::text('pin')}}
+                                                {{ Form::hidden('id', $mtf->id) }}
+                                                {{ Form::submit('submit')}}
+                                                {{Form::close()}} 
+                                                {{Form::open(array('action' => 'UserController@cancel'))}}
+                                                <?php echo "<br>"; ?>
+                                                {{ Form::hidden('id', $mtf->id) }}
+                                                {{ Form::submit('cancel')}}
+                                                {{Form::close()}}
+                                            @endforeach
+                                    @else
+                                             No Transfer Requests
+                                    @endif
+
 	                               	</span>
                                 </div>
                             </li>

@@ -23,6 +23,9 @@ Route::post('advanced_search', ['as' => 'validate_asearch', 'uses' => 'UserContr
 Route::get('books', array('as'=>'books','uses'=>'UserController@index'));
 Route::post('books', array('as'=>'bookstransfer','uses'=>'UserController@transfer'));
 Route::post('available', array('as'=>'available','uses'=>'UserController@available'));
+Route::post('confirm', array('as'=>'bookstransferfinish','uses'=>'UserController@transferfinish'));
+Route::post('cancel', array('as'=>'bookstransfercancel','uses'=>'UserController@cancel'));
+//Route::post('transferfinish', ['as' => 'transferfinish', 'uses' => 'UserController@transferfinish']);
 
 //control for upvoting and suggestion
 Route::get('new_additions', ['as' => 'user_new_additions', 'uses' => 'UserController@new_additions']);
@@ -49,16 +52,18 @@ Route::post('method/update', ['as' => 'update_form', 'uses' => 'UserController@u
 
 
 Route::post('method/wish', ['as' => 'add_wish', 'uses' => 'UserController@add_wish']);
+Route::post('method/del_wish', ['as' => 'del_wish', 'uses' => 'UserController@del_wish']);
 Route::get('login', ['as' => 'login', 'uses' => 'UserController@login']);
 Route::post('login', ['as' => 'login', 'uses' => 'UserController@postlogin']);
 Route::get('lock_screen', ['as' => 'lock_screen', 'uses' => 'UserController@lock_screen']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
-Route::post('add_wish', ['as' => 'add_wish', 'uses' => 'UserController@wish_list']);
+//Route::post('add_wish', ['as' => 'add_wish', 'uses' => 'UserController@wish_list']);
 Route::get('new_additions', ['as' => 'user_new_additions', 'uses' => 'UserController@new_additions']);
 
 Route::get('new_arrivals', ['as' => 'new_arrivals', 'uses' => 'UserController@new_arrivals']);
 Route::get('feedback', ['as' => 'feedback', 'uses' => 'UserController@feedback']);
 Route::post('feedback', ['as' => 'feedback', 'uses' => 'UserController@postfeedback']);
+
 /**********************************************************************************************************************/
 
 
@@ -82,13 +87,19 @@ Route::group(array('prefix' => 'func'), function() {
     Route::post('new_del', ['as' => 'func_new_del', 'uses' => 'HomeController@new_del']);
     Route::post('lost_book', ['as' => 'func_lost_book', 'uses' => 'HomeController@lost_book']);
     Route::post('updates', ['as' => 'func_updates', 'uses' => 'HomeController@updates']);
+    Route::post('admin_change_pass', ['as' => 'func_changepassword', 'uses' => 'AdminController@changepassword']);
 
 });
 
-
+//API Calls
 Route::api('v1', function () {
     Route::get('login', 'APIController@login');
+    Route::get('logout', 'APIController@logout');
+    Route::get('bsearch', 'APIController@searchapi');
 });
+
+
+//Admin Routes
 Route::get('admin/login', ['as' => 'adminlogin', 'uses' => 'AdminController@login']);
 Route::post('admin/login', ['as' => 'adminlogin', 'uses' => 'AdminController@postlogin']);
 Route::group(array('before'=>'auth.admin', 'prefix' => 'admin'),function()
@@ -101,6 +112,7 @@ Route::group(array('before'=>'auth.admin', 'prefix' => 'admin'),function()
     Route::get('newadditions', ['as' => 'newadditions', 'uses' => 'AdminController@newadd']);
     Route::get('user', ['as' => 'adminuser', 'uses' => 'AdminController@userprofile']);
     Route::post('user', ['as' => 'adminuser', 'uses' => 'AdminController@postuserprofile']);
+    Route::get('profile', ['as' => 'adminprof', 'uses' => 'AdminController@adminprof']);
     Route::group(array('prefix' => 'tables'), function() {
         Route::get('users', ['as' => 'tabusers', 'uses' => 'AdminController@tabusers']);
         Route::get('books', ['as' => 'tabbooks', 'uses' => 'AdminController@tabbooks']);

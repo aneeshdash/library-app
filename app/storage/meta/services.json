@@ -29,7 +29,8 @@
         "Ollieread\\Multiauth\\Reminders\\ReminderServiceProvider",
         "Indatus\\Dispatcher\\ServiceProvider",
         "Maatwebsite\\Excel\\ExcelServiceProvider",
-        "Dingo\\Api\\Provider\\ApiServiceProvider"
+        "Dingo\\Api\\Provider\\ApiServiceProvider",
+        "Barryvdh\\DomPDF\\ServiceProvider"
     ],
     "eager": [
         "Illuminate\\Cookie\\CookieServiceProvider",
@@ -117,7 +118,8 @@
         "auth.reminder": "Ollieread\\Multiauth\\Reminders\\ReminderServiceProvider",
         "command.scheduled.summary": "Indatus\\Dispatcher\\ServiceProvider",
         "command.scheduled.make": "Indatus\\Dispatcher\\ServiceProvider",
-        "command.scheduled.run": "Indatus\\Dispatcher\\ServiceProvider"
+        "command.scheduled.run": "Indatus\\Dispatcher\\ServiceProvider",
+        "dompdf": "Barryvdh\\DomPDF\\ServiceProvider"
     },
     "when": {
         "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider": [],
@@ -139,6 +141,7 @@
         "Illuminate\\Validation\\ValidationServiceProvider": [],
         "Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider": [],
         "Ollieread\\Multiauth\\Reminders\\ReminderServiceProvider": [],
-        "Indatus\\Dispatcher\\ServiceProvider": []
+        "Indatus\\Dispatcher\\ServiceProvider": [],
+        "Barryvdh\\DomPDF\\ServiceProvider": []
     }
 }

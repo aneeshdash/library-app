@@ -51,7 +51,7 @@
                                 <select class="form-control" style="margin-left:3px;" name="basedon">
                                     <option value="title">Title</option>
                                     <option value="authors">Author</option>
-                                    <option value="number">Number</option>
+                                    <!-- <option value="number">Number</option> -->
                                     <option value="any">Any field</option>
                                 </select>
                             </div>
@@ -85,6 +85,13 @@
 <!-- Book Card -->
 <div class="row mt">
 
+    <?php
+    $wishes = DB::table('wishlist')->where('user_id', Auth::user()->get()->id)->get();
+    $array = array();
+    foreach($wishes as $wish){
+        $array[] = $wish->book_name;
+    }
+    ?>
 
     <?php foreach($uniqueresults as $entry) {
         $countofcopies = 0;
@@ -101,7 +108,7 @@
         <div class="col-lg-3 col-md-3 col-sm-3 mb">
             <div class="content-panel pn">
 
-                <div style="min-height:106px;margin-left:10">
+                <div style="min-height:106px; margin-left:10px">
 
                     <h3><i class="fa fa-angle-right"> </i> {{ $entry->title}}</h3>
                     <h6>{{ $entry->authors}}</h6>
@@ -111,7 +118,18 @@
                         <h5><i class="fa fa-book"></i><br/><a data-toggle="modal" data-target="#myModal{{ $entry->id }}" href="#">Book Details</a></h5>
                     </div>
                     <div class="profile-01 centered">
-                        <p><i id="icon" class="fa fa-heart" onclick="wish({{ $entry->id }})"> ADD TO WISHLIST</i></p>
+                        <?php
+                        if (in_array($entry->title,$array)) {
+                        ?>
+                        <p><i id="icon{{$entry->id}}" class="fa fa-check" onclick="wish({{ $entry->id }})"> ADDED TO WISHLIST</i></p>
+                        <?php
+                        }
+                        else{
+                        ?>
+                        <p><i id="icon{{$entry->id}}" class="fa fa-heart" onclick="wish({{ $entry->id }})"> ADD TO WISHLIST</i></p>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -162,9 +180,9 @@
 
                             </tr>
                             @foreach ($results as $item)
-                                @if ($item->title == $entry->title && $item->authors == $entry->authors && $item->available == 1)
+                                @if ( $item->title == $entry->title && $item->authors == $entry->authors && $item->available == 1)
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->user->name }}</td>
                                         <td><button type="button" id="{{ $item->id }}" value="{{ $item->id }}">Ask</button></td>
                                     </tr>
                                 @endif
@@ -203,28 +221,32 @@
     <script>
         function wish(id)
         {
-            var select_data = {
-                'book_id' : id,
-                'user_id' : 2
-            };
+            if($("#icon"+id).hasClass("fa-heart")) {
+                var select_data = {
+                    'book_id': id
+                };
 
-            $.ajax({
-                url: "{{ route('add_wish') }}",
-                method: 'POST',
-                data: select_data,
-                dataType: 'json',
-                encode: 'true'
-            })
+                $.ajax({
+                    url: "{{ route('add_wish') }}",
+                    method: 'POST',
+                    data: select_data,
+                    dataType: 'json',
+                    encode: 'true'
+                })
 
-                    .success(function () {
-                        alert("success");
-                        $("#icon").removeClass("fa fa-heart");
-                        $("#icon").addClass("fa fa-check");
-                        $("#icon").text("ADDED TO WISHLIST")
-                    })
-                    .fail(function () {
-                        alert("Already added to WishList");
-                    })
+                        .success(function () {
+                            alert("success");
+                            $("#icon" + id).removeClass("fa fa-heart");
+                            $("#icon" + id).addClass("fa fa-check");
+                            $("#icon" + id).text("ADDED TO WISHLIST")
+                        })
+                        .fail(function () {
+                            alert("Already added to WishList");
+                        })
+            }
+            else{
+                alert("hell o!");
+            }
         }
     </script>
 

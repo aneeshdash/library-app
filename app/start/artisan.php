@@ -13,3 +13,6 @@
 
 Artisan::add(new ReturnReminder);
 Artisan::add(new bookQueue);
+Artisan::add(new fine);
+//Artisan::add(new clearuserVisit);
+//Artisan::add(new userVisit);

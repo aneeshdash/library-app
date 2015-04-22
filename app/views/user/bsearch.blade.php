@@ -51,7 +51,7 @@
                                 <select class="form-control" style="margin-left:3px;" name="basedon">
                                     <option value="title">Title</option>
                                     <option value="authors">Author</option>
-                                    <option value="number">Number</option>
+                                    <!-- <option value="number">Number</option> -->
                                     <option value="any">Any field</option>
                                 </select>
                             </div>

@@ -61,7 +61,7 @@ class clearuserVisit extends ScheduledCommand {
 	protected function getArguments()
 	{
 		return array(
-			array('example', InputArgument::REQUIRED, 'An example argument.'),
+//			array('example', InputArgument::REQUIRED, 'An example argument.'),
 		);
 	}
 
@@ -73,7 +73,7 @@ class clearuserVisit extends ScheduledCommand {
 	protected function getOptions()
 	{
 		return array(
-			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
+//			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
 		);
 	}
 

@@ -273,14 +273,19 @@ class HomeController extends BaseController {
             return 'pub success';
         }
         elseif( $table == "admin" ){
-
-
             $username = Input::get('name');
             $email = Input::get('email');
             $admin=new Admin;
             $admin->username = $username;
             $admin->email= $email;
+            $pass=str_random(6);
+            $admin->password=Hash::make($pass);
             $admin->save();
+            Mail::send('emails.addadmin', array('admin' => $admin, 'pass' => $pass) ,function($message) use($admin)
+            {
+                $message->from('a.dash@iitg.ernet.in', 'Aneesh Dash');
+                $message->to($admin->email, $admin->username)->subject('Welcome Admin');
+            });
             return 'admin success';
         }
     }
@@ -382,7 +387,7 @@ class HomeController extends BaseController {
             $hashedPassword = $admin->password;
             if (Hash::check($check, $hashedPassword))
             {
-                // Admin::destroy(intval($id));
+                Admin::destroy(intval($id));
                 return 'admin success';
             }
         }
@@ -412,16 +417,19 @@ class HomeController extends BaseController {
     }
 
     public function show_book() {
-        $code=intval(Input::get('code'));
-        $book=Book::where('code',$code)->first();
+        $id=intval(Input::get('id'));
+        $book=Book::where('id',$id)->first();
         return View::make('functions.show_book')->with('book', $book);
     }
 
     public function issue_book() {
         $code=Input::get('code');
+        $time=Env::where('variable','tle')->pluck('value');
         $book=Book::where('id',$code)->first();
         if($book->issue == null) {
             $book->issue = intval(Input::get('user'));
+            $book->issue_date=Carbon::now();
+            $book->return_date=Carbon::now()->addDays($time);
             $book->issue_no = 1;
             if ($book->save()) {
                 $new=new Transaction;
@@ -493,12 +501,12 @@ class HomeController extends BaseController {
     public function reissue_book() {
         $user_id=intval(Input::get('user'));
         $book_id=intval(Input::get('book'));
+        $time=Env::where('variable','tle')->pluck('value');
         if(User::where('id', $user_id)->exists() && Book::where('id', $book_id)->exists()) {
             $book=Book::find($book_id);
             if($book->issue == $user_id) {
-                if($book->issue_no < 1)
                 $book->issue_date=Carbon::now();
-                $book->return_date=Carbon::now()->addDays(30);
+                $book->return_date=Carbon::now()->addDays($time);
                 $book->issue=$user_id;
                 $book->issue_no += 1;
                 $book->save();
@@ -532,7 +540,7 @@ class HomeController extends BaseController {
         $book->save();
         $new=new Transaction;
         $new->book_id =$book_id;
-        $new->user_id = $user_id;
+        $new->user_id = $book->user->id;
         $new->transaction_type ="LB_R";
         $new->save();
         LostBook::where('book_id', $book_id)->first()->delete();

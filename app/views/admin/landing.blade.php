@@ -30,16 +30,16 @@ $book = DB::table('lost_book')->first();
                 <div class="box-body">
                  
                     <div class="form-group">
-                      <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject"/>
+                      <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required/>
                     </div>
 
                     <div>
-                      <textarea class="textarea" placeholder="Message" name="message" id="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                      <textarea class="textarea" placeholder="Message" name="message" id="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
                     </div>
                   
                 </div>
                 <div class="box-footer clearfix">
-                  <button type="submit" class="pull-right btn btn-default" >Post <i class="fa fa-arrow-circle-right"></i></button>
+                  <input type="submit" class="pull-right btn btn-default" value="Post <i class='fa fa-arrow-circle-right'></i>">
                 
                 </div>
               </form>

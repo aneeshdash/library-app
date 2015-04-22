@@ -63,7 +63,7 @@ class UserController extends BaseController {
                     $pass = fgets($fp, 128);
                     if (trim($pass) == '+OK Logged in.') {
                         $u = 'Successfully Logged In';
-                        Auth::user()->login(User::where('webmail', $webmail)->first());
+                        Auth::user()->login(User::where('webmail', $webmail)->first(),Input::get('remember')==='yes');
                         return Redirect::route('user_bsearch');
                     } else {
                         $error = 'Wrong Details';
@@ -101,11 +101,13 @@ class UserController extends BaseController {
                 $result->available = 1;
                 $result->save();
             }
-
         }
         else {
             $result = Book::where('id',(int)$data['id'])->first();
             if (sizeof($result) !=0) {
+                foreach (Mutualtransfer::where('book_id','=',$data['id'])->first() as $mtf) {
+                    $mtf->delete();
+                }
                 $result->available = 0;
                 $result->save();
             }
@@ -210,14 +212,20 @@ class UserController extends BaseController {
 
     public function add_wish()
     {
-        $wish = DB::table('wishlist')->where('id',Input::get('user_id'))->where('book_id',Input::get('book_id'));
-        if(empty($wish)) {
-            DB::table('wishlist')->insert(
-                ['book_id' => Input::get('book_id'), 'user_id' => Input::get('user_id')]
-            );
-            $dummy = array();
-            echo json_encode($dummy);
-        }
+        $book = DB::table('books')->where('id',Input::get('book_id'))->first();
+        $book_name = $book->title;
+        DB::table('wishlist')->insert(
+            ['book_id' => Input::get('book_id'),'book_name' => $book_name, 'user_id' => Auth::user()->get()->id]
+        );
+        $dummy = array();
+        echo json_encode($dummy);
+    }
+
+    public function del_wish()
+    {
+        DB::table('wishlist')->where('id', Input::get('val'))->delete();
+        $dummy =array();
+        echo json_encode($dummy);
     }
 
     public function newadd()
@@ -275,13 +283,11 @@ class UserController extends BaseController {
         }
         else {
             if ($connector == "or") {
-                echo "here".'<br>';
                 $keyword = explode( ' ', Input::get('keyword'));
                 $query = DB::table('books');
                 for ($i=0; $i < sizeof($keyword); $i++) {
                     $query->orwhere('title','LIKE','%'.$keyword[$i].'%')
-                        ->orwhere('author','LIKE','%'.$keyword[$i].'%')
-                        ->orwhere('number','LIKE','%'.$keyword[$i].'%');
+                        ->orwhere('author','LIKE','%'.$keyword[$i].'%');
                 }
                 // $results = $query->get();
                 $results = $query;
@@ -291,8 +297,7 @@ class UserController extends BaseController {
                 $query = DB::table('books');
                 for ($i=0; $i < sizeof($keyword); $i++) {
                     $query->where('title','LIKE','%'.$keyword[$i].'%')
-                        ->orwhere('author','LIKE','%'.$keyword[$i].'%')
-                        ->orwhere('number','LIKE','%'.$keyword[$i].'%');
+                        ->orwhere('author','LIKE','%'.$keyword[$i].'%');
                 }
                 // $results = $query->get();
                 $results = $query;
@@ -301,8 +306,7 @@ class UserController extends BaseController {
                 $keyword = Input::get('keyword');
                 // $results = Test::where($field,'LIKE','%'.$keyword.'%')->get();
                 $results = Book::where('title','LIKE','%'.$keyword.'%')
-                    ->orwhere('author','LIKE','%'.$keyword[$i].'%')
-                    ->orwhere('number','LIKE','%'.$keyword[$i].'%');
+                    ->orwhere('author','LIKE','%'.$keyword.'%');
             }
         }
         $sortby = Input::get('sortby') ;
@@ -311,6 +315,7 @@ class UserController extends BaseController {
         $copy = $results ;
         $results = $results->orderBy($sortby,$order)->get();
         $uniqueresults = $copy->orderBy($sortby,$order)->groupBy('title')->get();
+
 
         //    echo "received: ".$sortby."<br>";
         // usort($results, function($a, $b) {
@@ -814,34 +819,43 @@ class UserController extends BaseController {
         echo json_encode($data);
     }
 
+    public function cancel()
+    {
+        $id=Input::get('id');
+        $mtf=Mutualtransfer::find($id);
+        $mtf->delete();
+        return View::make('user.queued_books');
+
+    }
     public function transferfinish()
     {
         $id=Input::get('id');
         $pin=Input::get('pin');
         $mtf=Mutualtransfer::find($id);
-        if(encrypt($pin)==$mtf->pin)
+
+        if($pin==Crypt::decrypt($mtf->pin))
         {
             $mtf->status=1;
             $mtf->save();
             $book=Book::find($mtf->book_id);
             $req=User::find($mtf->requester_id);
             $own=User::find($mtf->owner_id);
+
             $book->issue=$mtf->requester_id;
+            $book->available=0;
             $req->no_books_issued=$req->no_books_issued+1;
             $own->no_books_issued=$own->no_books_issued-1;
             $book->save();
             $req->save();
             $own->save();
+
             $trans = new Transaction;
             $trans->book_id=$book->id;
             $trans->user_id=$req->id;
-            $trans->transaction_type=2;
+            $trans->transaction_type=3;
             $trans->save();
         }
-        else
-        {
-            Return "Wrong Pin";
-        }
+        return View::make('user.queued_books');
     }
 
     public function new_arrivals()
@@ -874,5 +888,7 @@ class UserController extends BaseController {
 
         return Redirect::action('UserController@home');//->with("modal_message_error", "You must be logged in to view this page.");
     }
+
+    
 
 }

@@ -14,7 +14,6 @@ class LostBook extends Eloquent {
     {
         return $this->belongsTo('Book');
     }
-
     function user() {
         return $this->belongsTo('User');
     }

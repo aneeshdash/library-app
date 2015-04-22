@@ -124,11 +124,11 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="pull-right">
-                            Book Code
+                            Book ID
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" class="form-control" id="book_code">
+                        <input type="number" class="form-control" id="book_id">
                     </div>
                     <div class="col-md-3">
                         <button type="button" class="btn btn-flat btn-success" onclick="show_book()">Submit</button>
@@ -379,7 +379,7 @@
         }
 
         function show_book() {
-            code=$('#book_code').val();
+            code=$('#book_id').val();
             if(code=='' || code==0) {
                 alert('Please fill book code');
             }
@@ -387,7 +387,7 @@
                 $.ajax({
                     url: '{{ route('func_show_book') }}',
                     method: 'POST',
-                    data: {code: code}
+                    data: {id: code}
                 })
                         .success(function (result) {
                             $('#show_book').html(result);
