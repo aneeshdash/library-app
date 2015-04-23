@@ -49,7 +49,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
-//    return View::make('error');
+        return View::make('error');
 });
 
 /*
@@ -82,9 +82,9 @@ App::down(function()
 
 require app_path().'/filters.php';
 
-//Handle missing page error
-//App::missing(function($e) {
-//    $url = Request::fullUrl();
-//    Log::warning("404 for URL: $url");
-//    return View::make('error404');
-//});
+Handle missing page error
+App::missing(function($e) {
+   $url = Request::fullUrl();
+   Log::warning("404 for URL: $url");
+   return View::make('error404');
+});
