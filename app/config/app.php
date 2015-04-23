@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug' => true,
+	'debug' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -195,9 +195,9 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
-        'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
-        'Carbon'            => 'Carbon\Carbon',
-        'API'               => 'Dingo\Api\Facade\API'
+        	'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
+        	'Carbon'            => 'Carbon\Carbon',
+        	'API'               => 'Dingo\Api\Facade\API'
 
 	),
 
